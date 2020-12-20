@@ -28,6 +28,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
+  gradient_progress: ^0.1.0
 
 dev_dependencies:
   flutter_test:
@@ -60,17 +61,40 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
+  fonts:
+    - family: RobotoLocal
+      fonts:
+        - asset: lib/fonts/Roboto-Black.ttf
+          weight: 900
+        - asset: lib/fonts/Roboto-BlackItalic.ttf
+          weight: 900
+          style: italic
+        - asset: lib/fonts/Roboto-Bold.ttf
+          weight: 700
+        - asset: lib/fonts/Roboto-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: lib/fonts/Roboto-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: lib/fonts/Roboto-Light.ttf
+          weight: 300
+        - asset: lib/fonts/Roboto-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: lib/fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: lib/fonts/Roboto-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: lib/fonts/Roboto-Regular.ttf
+          weight: 400
+        - asset: lib/fonts/Roboto-Thin.ttf
+          weight: 300
+        - asset: lib/fonts/Roboto-ThinItalic.ttf
+          weight: 300
+          style: italic
+
+#
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
