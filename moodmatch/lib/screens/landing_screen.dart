@@ -31,12 +31,12 @@ class _LandingScreenState extends State<LandingScreen>
   }
 
   void delay() {
-    Timer(Duration(seconds: 2), () {
-      // 5s over, navigate to a new page
+    Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(context, HomeScreen.id);
     });
   }
 
+//  TODO make a better progress indicator that on finish will open next page
   @override
   Widget build(BuildContext context) {
     delay();
@@ -54,11 +54,6 @@ class _LandingScreenState extends State<LandingScreen>
                   child: GradientText(
                     kAppName,
                     kAppNameStyle.copyWith(fontSize: 70),
-                    gradient: LinearGradient(
-                      colors: [kPurple, kPink],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
                   ),
                 ),
               ),
