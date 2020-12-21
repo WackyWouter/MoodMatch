@@ -12,8 +12,8 @@ class NotificationButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 300,
-        height: 300,
+        width: 350,
+        height: 250,
         decoration: BoxDecoration(
             color: kDarkPurple,
             borderRadius: BorderRadius.all(Radius.circular(10))),
