@@ -38,7 +38,7 @@ class StatusWidget extends StatelessWidget {
             ),
             Image(
               image: AssetImage(inTheMood == 1
-                  ? 'lib/assets/images/fire.png'
+                  ? 'lib/assets/images/fire_gradient.png'
                   : 'lib/assets/images/firegrey.png'),
               height: 35,
               width: 35,
