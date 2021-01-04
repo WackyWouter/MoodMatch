@@ -6,6 +6,7 @@ const Color kNonGradientText = Color(0xFFFFFFFF);
 const Color kPurple = Color(0xFF6337FF);
 const Color kPink = Color(0xFFD751FF);
 const String kAppName = 'MOOD\nMATCH';
+const String kUrl = 'http://wfcbosch-nl.stackstaging.com/MoodMatch/index.php/';
 const TextStyle kAppNameStyle = TextStyle(
   fontFamily: 'RobotoLocal',
   fontStyle: FontStyle.italic,

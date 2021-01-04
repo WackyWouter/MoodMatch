@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodmatch/constant.dart';
+import 'package:moodmatch/models/status_api_response.dart';
 import 'package:moodmatch/widgets/gradient_text.dart';
 import 'package:moodmatch/widgets/notification_button.dart';
 import 'package:moodmatch/widgets/small_icon_button.dart';
@@ -19,7 +20,23 @@ class _HomeScreenState extends State<HomeScreen> {
   int youMood = 0;
   int partnerMood = 0;
 
-  void getStatuses() {}
+  void getStatuses() async {
+    //TODO get matchid and matcheruuid from sharedpref
+    int matchId = 8;
+    String matcherUuid = '9c7aa3a1-a5dc-4cea-8ffd-abcf235913b8';
+
+    StatusApiResponse status = await Api.getStatus(matchId, matcherUuid);
+    if (status == null) {
+      // TODO show error on screen
+      print(Api.latestError);
+    } else {
+      print("got state");
+      setState(() {
+        youMood = status.you;
+        partnerMood = status.partner;
+      });
+    }
+  }
 
   @override
   void initState() {
