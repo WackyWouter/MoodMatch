@@ -6,6 +6,7 @@ import 'package:moodmatch/widgets/small_icon_button.dart';
 import 'package:moodmatch/screens/history_screen.dart';
 import 'package:moodmatch/screens/settings_screen.dart';
 import 'package:moodmatch/widgets/status_widget.dart';
+import 'package:moodmatch/api.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = 'home_screen';
@@ -17,6 +18,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int youMood = 0;
   int partnerMood = 0;
+
+  void getStatuses() {}
+
+  @override
+  void initState() {
+    super.initState();
+    getStatuses();
+  }
 
   @override
   Widget build(BuildContext context) {
