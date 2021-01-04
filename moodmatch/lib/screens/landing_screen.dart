@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moodmatch/constant.dart';
 import 'package:moodmatch/widgets/gradient_text.dart';
-import 'package:gradient_progress/gradient_progress.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:moodmatch/screens/home_screen.dart';
 import 'dart:async';
 
@@ -12,43 +12,53 @@ class LandingScreen extends StatefulWidget {
   _LandingScreenState createState() => _LandingScreenState();
 }
 
-class _LandingScreenState extends State<LandingScreen>
-    with TickerProviderStateMixin {
-  AnimationController _animationController;
+class _LandingScreenState extends State<LandingScreen> {
+  bool _loading = true;
 
-  void initState() {
-    _animationController =
-        new AnimationController(vsync: this, duration: Duration(seconds: 2));
-    _animationController.addListener(() => setState(() {}));
-    _animationController.repeat();
-    super.initState();
+//  Push to home screen after delay
+  void delay() async {
+    await Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        _loading = false;
+      });
+    });
+    Navigator.pushReplacementNamed(context, HomeScreen.id);
+  }
+
+//  Make sure to check its mounted before attempting setstate
+//  This is to prevent setstate being called after dispose
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    delay();
   }
 
-  void delay() {
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, HomeScreen.id);
-    });
-  }
-
-//  TODO make a better progress indicator that on finish will open next page
   @override
   Widget build(BuildContext context) {
-    delay();
     return Scaffold(
         backgroundColor: kLightPurple,
         body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-//          add MoodMatch here in gradient text
-              Container(
-                alignment: Alignment.topCenter,
+          child: ModalProgressHUD(
+            inAsyncCall: _loading,
+            opacity: 0,
+            progressIndicator: SizedBox(
+              height: 60,
+              width: 60,
+              child: CircularProgressIndicator(
+                strokeWidth: 5,
+                valueColor: new AlwaysStoppedAnimation<Color>(kPurple),
+              ),
+            ),
+            child: Container(
+              child: Center(
+                heightFactor: 2.5,
                 child: Hero(
                   tag: 'appName',
                   child: GradientText(
@@ -57,23 +67,7 @@ class _LandingScreenState extends State<LandingScreen>
                   ),
                 ),
               ),
-              SizedBox(
-                height: 50,
-              ),
-              GradientCircularProgressIndicator(
-                gradientColors: [kPurple, kPink],
-                radius: 30,
-                strokeWidth: 10.0,
-                value: new Tween(begin: 0.0, end: 1.0)
-                    .animate(CurvedAnimation(
-                        parent: _animationController, curve: Curves.decelerate))
-                    .value,
-              ),
-              SizedBox(
-                height: 200,
-              ),
-//          progress indicator
-            ],
+            ),
           ),
         ));
   }
