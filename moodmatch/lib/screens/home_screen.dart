@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // TODO show error on screen
       print(Api.latestError);
     } else {
-      print("got state");
+      // update mood
       setState(() {
         youMood = status.you;
         partnerMood = status.partner;
@@ -41,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    // call getStatuses after build
     getStatuses();
   }
 
