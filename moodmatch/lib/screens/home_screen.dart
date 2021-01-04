@@ -5,9 +5,19 @@ import 'package:moodmatch/widgets/notification_button.dart';
 import 'package:moodmatch/widgets/small_icon_button.dart';
 import 'package:moodmatch/screens/history_screen.dart';
 import 'package:moodmatch/screens/settings_screen.dart';
+import 'package:moodmatch/widgets/status_widget.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const String id = 'home_screen';
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int youMood = 0;
+  int partnerMood = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,76 +63,8 @@ class HomeScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'YOU',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: 'RobotoLocal',
-                              fontWeight: FontWeight.bold,
-                              color: kNonGradientText),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Image(
-                              image: AssetImage(
-                                  'lib/assets/images/snowflakegrey.png'),
-                              height: 35,
-                              width: 35,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Image(
-                              image:
-                                  AssetImage('lib/assets/images/firegrey.png'),
-                              height: 35,
-                              width: 35,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'PARTNER',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: 'RobotoLocal',
-                              fontWeight: FontWeight.bold,
-                              color: kNonGradientText),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Image(
-                              image: AssetImage(
-                                  'lib/assets/images/snowflakegrey.png'),
-                              height: 35,
-                              width: 35,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Image(
-                              image:
-                                  AssetImage('lib/assets/images/firegrey.png'),
-                              height: 35,
-                              width: 35,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
+                    StatusWidget(title: 'You', inTheMood: youMood),
+                    StatusWidget(title: 'Partner', inTheMood: partnerMood),
                   ],
                 ),
               )),
