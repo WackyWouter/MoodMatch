@@ -13,14 +13,10 @@ class StatusWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          title ?? '',
-          style: TextStyle(
-              fontSize: 18,
-              fontFamily: 'RobotoLocal',
+        Text(title ?? '',
+            style: kNormalTextStyle.copyWith(
               fontWeight: FontWeight.bold,
-              color: kNonGradientText),
-        ),
+            )),
         SizedBox(
           height: 10,
         ),

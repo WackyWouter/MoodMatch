@@ -26,11 +26,11 @@ class GradientText extends StatelessWidget {
         text,
         style: textStyle != null
             ? textStyle.copyWith(
-                color: Colors.white,
+                color: kNonGradientText,
               )
             : TextStyle(
                 // The color must be set to white for this to work
-                color: Colors.white,
+                color: kNonGradientText,
                 fontSize: 40,
               ),
         textAlign: TextAlign.center,

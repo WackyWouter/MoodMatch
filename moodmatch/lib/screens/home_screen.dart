@@ -85,16 +85,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: kDarkPurple,
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Center(
-                  child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    StatusWidget(title: 'You', inTheMood: youMood),
-                    StatusWidget(title: 'Partner', inTheMood: partnerMood),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      StatusWidget(title: 'You', inTheMood: youMood),
+                      StatusWidget(title: 'Partner', inTheMood: partnerMood),
+                    ],
+                  ),
                 ),
-              )),
+              ),
             ),
             NotificationButton(
               onTap: () {},
