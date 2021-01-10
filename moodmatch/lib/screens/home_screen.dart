@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     StatusApiResponse status = await Api.getStatus(matchId, matcherUuid);
     if (status == null) {
-      // TODO show error on screen
+      // TODO show error on screen with flushbar
       print(Api.latestError);
     } else {
       // update mood
