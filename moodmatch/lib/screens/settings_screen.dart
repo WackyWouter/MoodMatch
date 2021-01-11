@@ -5,6 +5,8 @@ import 'package:moodmatch/widgets/gradient_text.dart';
 import 'package:moodmatch/widgets/small_icon_button.dart';
 import 'package:moodmatch/widgets/setting_btn.dart';
 import 'package:moodmatch/api.dart';
+import 'package:flutter/services.dart';
+import 'package:moodmatch/widgets/flushbar_wrapper.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const String id = 'settings_screen';
@@ -98,20 +100,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: 20),
             SettingBtn(
                 onTap: () {
-//                  // Add matcherUuid to the clipboard
-//                  Clipboard.setData(ClipboardData(text: matcherUuid));
-//
-//                  // Show snackbar to let user now it has been added to the clipboard
-//                  FlushbarWrapper().flushBarWrapper(
-//                      messageText:
-//                          'Your Match-Code has been copied to the clipboard.',
-//                      context: context,
-//                      onPressed: () {
-//                        // Empty clipboard
-//                        Clipboard.setData(ClipboardData(text: ' '));
-//                      },
-//                      btnText: 'UNDO');
-                  _showConfirmationDialog();
+                  // Add matcherUuid to the clipboard
+                  Clipboard.setData(ClipboardData(text: matcherUuid));
+
+                  // Show snackbar to let user now it has been added to the clipboard
+                  FlushbarWrapper().flushBarWrapper(
+                      messageText:
+                          'Your Match-Code has been copied to the clipboard.',
+                      context: context,
+                      onPressed: () {
+                        // Empty clipboard
+                        Clipboard.setData(ClipboardData(text: ' '));
+                      },
+                      btnText: 'UNDO');
                 },
                 icon: 'lib/assets/images/copy.png',
                 text: 'COPY MATCH CODE'),
@@ -239,8 +240,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       // close the popup
                       Navigator.of(contextID).pop();
                       // TODO save match id in saved preference
-
-                      // TODO show flushbar to let user know of succes
+                      matchId = match.matchId;
+                      // show flushbar to let user know of success
+                      FlushbarWrapper().flushBarWrapper(
+                        messageText: 'You have been successfully Partnered up!',
+                        context: context,
+                      );
                     }
                   } else {
                     setState(() {
