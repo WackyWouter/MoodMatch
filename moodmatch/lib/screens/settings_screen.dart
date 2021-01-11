@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:moodmatch/constant.dart';
 import 'package:moodmatch/widgets/gradient_text.dart';
 import 'package:moodmatch/widgets/small_icon_button.dart';
-import 'package:flutter/services.dart';
 import 'package:moodmatch/widgets/setting_btn.dart';
-import 'package:moodmatch/widgets/flushbar_wrapper.dart';
-import 'package:moodmatch/widgets/system_padding.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const String id = 'settings_screen';
@@ -18,6 +15,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String matcherUuid = '';
   int matchId = 0;
   bool matched = false;
+  String error;
   final myController = TextEditingController();
 
   @override
@@ -192,14 +190,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
             "Enter Match-code",
             style: kNormalTextStyle.copyWith(fontSize: 20),
           ),
-          content: TextField(
-            controller: myController,
-            // TODO style the textField
-            // https://api.flutter.dev/flutter/material/InputDecoration-class.html
-            // https://medium.com/@om.m.mestry/to-create-a-beautiful-text-box-with-in-flutter-a7a4d11ae13f
-            // https://stacksecrets.com/flutter/flutter-textfield-decoration-in-depth
-            // https://medium.com/flutter-community/a-deep-dive-into-flutter-textfields-f0e676aaab7a
-            decoration: InputDecoration(fillColor: Colors.white),
+          content: Container(
+            width: 300,
+            height: 90,
+            child: Column(
+              children: [
+                TextField(
+                    controller: myController,
+                    decoration: kTextFieldDecoration.copyWith(errorText: null)),
+              ],
+            ),
           ),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
@@ -214,7 +214,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Text("I'm sure!",
                   style: kNormalTextStyle.copyWith(color: kPurple)),
               onPressed: () {
-                Navigator.of(context).pop();
+                if (matched) {
+                  // TODO call change partner
+                } else {
+                  // TODO create Match
+                }
               },
             ),
           ],
