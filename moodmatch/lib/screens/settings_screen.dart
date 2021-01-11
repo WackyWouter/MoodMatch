@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:moodmatch/constant.dart';
+import 'package:moodmatch/models/match_api_response.dart';
 import 'package:moodmatch/widgets/gradient_text.dart';
 import 'package:moodmatch/widgets/small_icon_button.dart';
 import 'package:moodmatch/widgets/setting_btn.dart';
+import 'package:moodmatch/api.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const String id = 'settings_screen';
@@ -15,7 +17,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String matcherUuid = '';
   int matchId = 0;
   bool matched = false;
-  String error;
+  dynamic error;
   final myController = TextEditingController();
 
   @override
@@ -145,7 +147,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     // flutter defined function
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext contextCD) {
         // return object of type Dialog
         return AlertDialog(
           backgroundColor: kLightPurple,
@@ -162,14 +164,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Text("Cancel",
                   style: kNormalTextStyle.copyWith(color: kPurple)),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(contextCD).pop();
               },
             ),
             FlatButton(
               child: Text("I'm sure!",
                   style: kNormalTextStyle.copyWith(color: kPurple)),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(contextCD).pop();
+                _showInputDialog();
               },
             ),
           ],
@@ -182,47 +185,73 @@ class _SettingsScreenState extends State<SettingsScreen> {
     // flutter defined function
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext contextID) {
         // return object of type Dialog
-        return AlertDialog(
-          backgroundColor: kLightPurple,
-          title: Text(
-            "Enter Match-code",
-            style: kNormalTextStyle.copyWith(fontSize: 20),
-          ),
-          content: Container(
-            width: 300,
-            height: 90,
-            child: Column(
-              children: [
-                TextField(
-                    controller: myController,
-                    decoration: kTextFieldDecoration.copyWith(errorText: null)),
-              ],
+        // Use stateful builder to be able to use setstate and only refresh the alertdialog
+        return StatefulBuilder(builder: (contextID2, setState) {
+          return AlertDialog(
+            backgroundColor: kLightPurple,
+            title: Text(
+              "Enter Match-code",
+              style: kNormalTextStyle.copyWith(fontSize: 20),
             ),
-          ),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            FlatButton(
-              child: Text("Cancel",
-                  style: kNormalTextStyle.copyWith(color: kPurple)),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            content: Container(
+              width: 300,
+              height: 100,
+              child: Column(
+                children: [
+                  TextField(
+                      controller: myController,
+                      decoration:
+                          kTextFieldDecoration.copyWith(errorText: error)),
+                ],
+              ),
             ),
-            FlatButton(
-              child: Text("I'm sure!",
-                  style: kNormalTextStyle.copyWith(color: kPurple)),
-              onPressed: () {
-                if (matched) {
-                  // TODO call change partner
-                } else {
-                  // TODO create Match
-                }
-              },
-            ),
-          ],
-        );
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              FlatButton(
+                child: Text("Cancel",
+                    style: kNormalTextStyle.copyWith(color: kPurple)),
+                onPressed: () {
+                  Navigator.of(contextID).pop();
+                },
+              ),
+              FlatButton(
+                child: Text("Submit",
+                    style: kNormalTextStyle.copyWith(color: kPurple)),
+                onPressed: () async {
+                  // check input is not empty
+                  if (myController.text.isNotEmpty) {
+                    MatchApiResponse match = await Api.changePartner(
+                        myController.text, matcherUuid, matched);
+                    // check if call went wrong
+                    if (match == null) {
+                      // TODO fix the api so that it also gives an error when the partner's uuid is not found or is not an uuid
+                      setState(() {
+                        error = Api.latestError;
+                      });
+                    } else {
+                      // update matched var and clean the error var
+                      setState(() {
+                        error = null;
+                        matched = true;
+                      });
+                      // close the popup
+                      Navigator.of(contextID).pop();
+                      // TODO save match id in saved preference
+
+                      // TODO show flushbar to let user know of succes
+                    }
+                  } else {
+                    setState(() {
+                      error = 'Please fill in the textfield.';
+                    });
+                  }
+                },
+              ),
+            ],
+          );
+        });
       },
     );
   }

@@ -21,6 +21,7 @@ const TextStyle kNormalTextStyle = TextStyle(
 );
 
 InputDecoration kTextFieldDecoration = InputDecoration(
+  errorMaxLines: 2,
   hintText: 'Fill in...',
   hintStyle: kNormalTextStyle.copyWith(color: kInputTextColor),
   errorStyle: kNormalTextStyle.copyWith(color: kError, fontSize: 14),
