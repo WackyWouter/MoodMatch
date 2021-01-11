@@ -8,6 +8,8 @@ import 'package:moodmatch/screens/history_screen.dart';
 import 'package:moodmatch/screens/settings_screen.dart';
 import 'package:moodmatch/widgets/status_widget.dart';
 import 'package:moodmatch/api.dart';
+import 'package:moodmatch/widgets/flushbar_wrapper.dart';
+import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   static const String id = 'home_screen';
@@ -19,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int youMood = 0;
   int partnerMood = 0;
+  bool error = false;
 
   void getStatuses() async {
     //TODO get matchid and matcheruuid from sharedpref
@@ -26,9 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
     String matcherUuid = '9c7aa3a1-a5dc-4cea-8ffd-abcf235913b8';
 
     StatusApiResponse status = await Api.getStatus(matchId, matcherUuid);
-    if (status == null) {
-      // TODO show error on screen with flushbar
-      print(Api.latestError);
+    if (status != null) {
+      error = true;
     } else {
       // update mood
       setState(() {
@@ -36,6 +38,23 @@ class _HomeScreenState extends State<HomeScreen> {
         partnerMood = status.partner;
       });
     }
+  }
+
+  void checkForError(BuildContext context) {
+    Timer(Duration(seconds: 2), () {
+      if (error) {
+        FlushbarWrapper().flushBarWrapper(
+            duration: 6,
+            messageText:
+                Api.latestError ?? 'An error occurred. Please try agian later.',
+            context: context,
+            icon: Icon(
+              Icons.error_outline,
+              color: kError,
+            ),
+            leftBarIndicatorColor: kError);
+      }
+    });
   }
 
   @override
@@ -47,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    checkForError(context);
     return Scaffold(
       backgroundColor: kLightPurple,
       body: SafeArea(
