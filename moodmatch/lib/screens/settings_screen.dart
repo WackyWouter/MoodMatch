@@ -4,8 +4,8 @@ import 'package:moodmatch/widgets/gradient_text.dart';
 import 'package:moodmatch/widgets/small_icon_button.dart';
 import 'package:flutter/services.dart';
 import 'package:moodmatch/widgets/setting_btn.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:moodmatch/widgets/flushbar_wrapper.dart';
+import 'package:moodmatch/widgets/system_padding.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const String id = 'settings_screen';
@@ -18,23 +18,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String matcherUuid = '';
   int matchId = 0;
   bool matched = false;
-
-  void getMatch() {
-    // TODO get match_id and matcher_uuid from shared preff
-    matcherUuid = 'TESTf6b8-2158-43a7-8c9c-d7a3e35d18b9';
-    matchId = 0;
-    if (matchId > 0) {
-      matched = true;
-    }
-  }
-
-  void clipboard() {}
+  final myController = TextEditingController();
 
   @override
   void initState() {
-    getMatch();
+    _getMatch();
     super.initState();
     // call getStatuses after build
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
   }
 
   @override
@@ -77,20 +74,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('MATCH-CODE:', style: kNormalTextStyle),
+                    Text('MATCH-CODE:',
+                        style: kNormalTextStyle.copyWith(fontSize: 22)),
                     SizedBox(height: 5),
                     Text(
                       matcherUuid.length > 0
                           ? matcherUuid
                           : 'Error. Please try again later.',
-                      style: kNormalTextStyle.copyWith(fontSize: 16),
+                      style: kNormalTextStyle,
                     ),
                     SizedBox(height: 20),
-                    Text('CONNECTED TO A PARTNER:', style: kNormalTextStyle),
+                    Text('CONNECTED TO A PARTNER:',
+                        style: kNormalTextStyle.copyWith(fontSize: 22)),
                     SizedBox(height: 5),
                     Text(
                       matched ? 'YES' : 'NO',
-                      style: kNormalTextStyle.copyWith(fontSize: 18),
+                      style: kNormalTextStyle,
                     )
                   ],
                 ),
@@ -99,47 +98,128 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: 20),
             SettingBtn(
                 onTap: () {
-                  // Add matcherUuid to the clipboard
-                  Clipboard.setData(ClipboardData(text: matcherUuid));
-
-                  // Show snackbar to let user now it has been added to the clipboard
-//                  Flushbar(
-//                    backgroundColor: kDarkPurple,
-//                    mainButton: FlatButton(
+//                  // Add matcherUuid to the clipboard
+//                  Clipboard.setData(ClipboardData(text: matcherUuid));
+//
+//                  // Show snackbar to let user now it has been added to the clipboard
+//                  FlushbarWrapper().flushBarWrapper(
+//                      messageText:
+//                          'Your Match-Code has been copied to the clipboard.',
+//                      context: context,
 //                      onPressed: () {
 //                        // Empty clipboard
 //                        Clipboard.setData(ClipboardData(text: ' '));
 //                      },
-//                      child: Text(
-//                        "UNDO",
-//                        style: TextStyle(color: kPurple),
-//                      ),
-//                    ),
-//                    messageText: Text(
-//                        'Your Match-Code has been copied to the clipboard.',
-//                        style: kNormalTextStyle.copyWith(fontSize: 18)),
-//                    duration: Duration(seconds: 3),
-//                  )..show(context);
-                  FlushbarWrapper().flushBarWrapper(
-                      messageText:
-                          'Your Match-Code has been copied to the clipboard.',
-                      context: context,
-                      onPressed: () {
-                        // Empty clipboard
-                        Clipboard.setData(ClipboardData(text: ' '));
-                      },
-                      btnText: 'UNDO');
+//                      btnText: 'UNDO');
+                  _showConfirmationDialog();
                 },
                 icon: 'lib/assets/images/copy.png',
                 text: 'COPY MATCH CODE'),
             SizedBox(height: 10),
             SettingBtn(
-                onTap: () {},
+                onTap: () {
+                  if (matched) {
+                    // Show popup to be sure to change match
+                    _showConfirmationDialog();
+                  } else {
+                    // Show input popup
+                    _showInputDialog();
+                  }
+                },
                 icon: 'lib/assets/images/edit.png',
                 text: 'NEW PARTNER'),
           ],
         ),
       ),
+    );
+  }
+
+  void _getMatch() {
+    // TODO get match_id and matcher_uuid from shared preff
+    matcherUuid = 'TESTf6b8-2158-43a7-8c9c-d7a3e35d18b9';
+    matchId = 0;
+    if (matchId > 0) {
+      matched = true;
+    }
+  }
+
+  void _showConfirmationDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          backgroundColor: kLightPurple,
+          title: Text(
+            "Change partner?",
+            style: kNormalTextStyle.copyWith(fontSize: 20),
+          ),
+          content: Text(
+              "Are you sure you want to match with a new partner? This will remove your current partner.",
+              style: kNormalTextStyle),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: Text("Cancel",
+                  style: kNormalTextStyle.copyWith(color: kPurple)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text("I'm sure!",
+                  style: kNormalTextStyle.copyWith(color: kPurple)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showInputDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          backgroundColor: kLightPurple,
+          title: Text(
+            "Enter Match-code",
+            style: kNormalTextStyle.copyWith(fontSize: 20),
+          ),
+          content: TextField(
+            controller: myController,
+            // TODO style the textField
+            // https://api.flutter.dev/flutter/material/InputDecoration-class.html
+            // https://medium.com/@om.m.mestry/to-create-a-beautiful-text-box-with-in-flutter-a7a4d11ae13f
+            // https://stacksecrets.com/flutter/flutter-textfield-decoration-in-depth
+            // https://medium.com/flutter-community/a-deep-dive-into-flutter-textfields-f0e676aaab7a
+            decoration: InputDecoration(fillColor: Colors.white),
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: Text("Cancel",
+                  style: kNormalTextStyle.copyWith(color: kPurple)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text("I'm sure!",
+                  style: kNormalTextStyle.copyWith(color: kPurple)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

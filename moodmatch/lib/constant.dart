@@ -16,5 +16,5 @@ const TextStyle kAppNameStyle = TextStyle(
 const TextStyle kNormalTextStyle = TextStyle(
   fontFamily: 'RobotoLocal',
   color: kNonGradientText,
-  fontSize: 22,
+  fontSize: 16,
 );

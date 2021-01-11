@@ -23,50 +23,16 @@ class _HomeScreenState extends State<HomeScreen> {
   int partnerMood = 0;
   bool error = false;
 
-  void getStatuses() async {
-    //TODO get matchid and matcheruuid from sharedpref
-    int matchId = 8;
-    String matcherUuid = '9c7aa3a1-a5dc-4cea-8ffd-abcf235913b8';
-
-    StatusApiResponse status = await Api.getStatus(matchId, matcherUuid);
-    if (status != null) {
-      error = true;
-    } else {
-      // update mood
-      setState(() {
-        youMood = status.you;
-        partnerMood = status.partner;
-      });
-    }
-  }
-
-  void checkForError(BuildContext context) {
-    Timer(Duration(seconds: 2), () {
-      if (error) {
-        FlushbarWrapper().flushBarWrapper(
-            duration: 6,
-            messageText:
-                Api.latestError ?? 'An error occurred. Please try agian later.',
-            context: context,
-            icon: Icon(
-              Icons.error_outline,
-              color: kError,
-            ),
-            leftBarIndicatorColor: kError);
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     // call getStatuses after build
-    getStatuses();
+    _getStatuses();
   }
 
   @override
   Widget build(BuildContext context) {
-    checkForError(context);
+    _checkForError();
     return Scaffold(
       backgroundColor: kLightPurple,
       body: SafeArea(
@@ -129,5 +95,38 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void _getStatuses() async {
+    //TODO get matchid and matcheruuid from sharedpref
+    int matchId = 8;
+    String matcherUuid = '9c7aa3a1-a5dc-4cea-8ffd-abcf235913b8';
+
+    StatusApiResponse status = await Api.getStatus(matchId, matcherUuid);
+    if (status == null) {
+      error = true;
+    } else {
+      // update mood
+      setState(() {
+        youMood = status.you;
+        partnerMood = status.partner;
+      });
+    }
+  }
+
+  void _checkForError() {
+    Timer(Duration(seconds: 2), () {
+      if (error) {
+        FlushbarWrapper().flushBarWrapper(
+            messageText:
+                Api.latestError ?? 'An error occurred. Please try agian later.',
+            context: context,
+            icon: Icon(
+              Icons.error_outline,
+              color: kError,
+            ),
+            leftBarIndicatorColor: kError);
+      }
+    });
   }
 }

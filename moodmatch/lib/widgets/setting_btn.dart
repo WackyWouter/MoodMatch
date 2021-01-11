@@ -30,7 +30,7 @@ class SettingBtn extends StatelessWidget {
                     )
                   : SizedBox(),
               SizedBox(width: 10),
-              Text(text, style: kNormalTextStyle)
+              Text(text, style: kNormalTextStyle.copyWith(fontSize: 22))
             ],
           ),
         ),

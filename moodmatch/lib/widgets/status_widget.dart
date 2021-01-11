@@ -15,6 +15,7 @@ class StatusWidget extends StatelessWidget {
       children: [
         Text(title ?? '',
             style: kNormalTextStyle.copyWith(
+              fontSize: 22,
               fontWeight: FontWeight.bold,
             )),
         SizedBox(

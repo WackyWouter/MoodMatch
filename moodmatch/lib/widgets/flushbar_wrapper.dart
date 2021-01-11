@@ -7,7 +7,7 @@ class FlushbarWrapper {
       {Function onPressed,
       Icon icon,
       String btnText,
-      int duration = 3,
+      int duration = 10,
       bool isDismissible = true,
       Color leftBarIndicatorColor = kPurple,
       @required String messageText,
@@ -29,8 +29,7 @@ class FlushbarWrapper {
               ),
             )
           : null,
-      messageText:
-          Text(messageText, style: kNormalTextStyle.copyWith(fontSize: 16)),
+      messageText: Text(messageText, style: kNormalTextStyle),
       duration: Duration(seconds: duration),
     )..show(context);
   }
