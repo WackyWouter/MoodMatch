@@ -1,12 +1,12 @@
 class ApiResponse {
   final String status;
-  final String error;
+  final String message;
 
-  ApiResponse({this.status, this.error});
+  ApiResponse({this.status, this.message});
 
   factory ApiResponse.fromJson(Map<String, dynamic> json) {
     return ApiResponse(
         status: json['status'],
-        error: json.containsKey('error') ? json['error'] : null);
+        message: json.containsKey('message') ? json['message'] : null);
   }
 }
