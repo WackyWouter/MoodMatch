@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _getStatuses() async {
     //TODO get matchid and matcheruuid from sharedpref
-    int matchId = 8;
+    int matchId = 11;
     String matcherUuid = '9c7aa3a1-a5dc-4cea-8ffd-abcf235913b8';
 
     StatusApiResponse status = await Api.getStatus(matchId, matcherUuid);

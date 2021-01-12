@@ -189,7 +189,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (BuildContext contextID) {
         // return object of type Dialog
         // Use stateful builder to be able to use setstate and only refresh the alertdialog
-        return StatefulBuilder(builder: (contextID2, setState) {
+        return StatefulBuilder(builder: (contextID2, setStateID2) {
           return AlertDialog(
             backgroundColor: kLightPurple,
             title: Text(
@@ -227,19 +227,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         myController.text, matcherUuid, matched);
                     // check if call went wrong
                     if (match == null) {
-                      // TODO fix the api so that it also gives an error when the partner's uuid is not found or is not an uuid
-                      setState(() {
+                      setStateID2(() {
                         error = Api.latestError;
                       });
                     } else {
                       // update matched var and clean the error var
-                      setState(() {
+                      // Do this in two different set states bcs of different scopes
+                      setStateID2(() {
                         error = null;
+                      });
+                      setState(() {
                         matched = true;
                       });
                       // close the popup
                       Navigator.of(contextID).pop();
-                      // TODO save match id in saved preference
+                      // TODO save match id in shared preference
                       matchId = match.matchId;
                       // show flushbar to let user know of success
                       FlushbarWrapper().flushBarWrapper(
@@ -248,7 +250,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       );
                     }
                   } else {
-                    setState(() {
+                    setStateID2(() {
                       error = 'Please fill in the textfield.';
                     });
                   }
