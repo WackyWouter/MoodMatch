@@ -4,14 +4,14 @@ import 'package:moodmatch/models/notification_history_list.dart';
 class HistoryApiResponse extends ApiResponse {
   final NotificationHistoryList notificationList;
 
-  HistoryApiResponse({status, message, this.notificationList})
-      : super(status: status, message: message);
+  HistoryApiResponse({status, error, this.notificationList})
+      : super(status: status, error: error);
 
   factory HistoryApiResponse.fromJson(Map<String, dynamic> json) {
     final apiResponse = ApiResponse.fromJson(json);
     return HistoryApiResponse(
         status: apiResponse.status,
-        message: apiResponse.message,
+        error: apiResponse.error,
         notificationList: json.containsKey('notifications')
             ? NotificationHistoryList.fromJson(json['notifications'])
             : []);

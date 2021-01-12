@@ -30,7 +30,7 @@ class Api {
       if (statusResponse.status == 'ok') {
         return statusResponse;
       } else {
-        latestError = statusResponse.message;
+        latestError = statusResponse.error;
         return null;
       }
     } else {
@@ -57,7 +57,7 @@ class Api {
       if (matchResponse.status == 'ok') {
         return matchResponse;
       } else {
-        latestError = matchResponse.message;
+        latestError = matchResponse.error;
         return null;
       }
     } else {

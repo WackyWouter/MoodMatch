@@ -3,14 +3,14 @@ import 'package:moodmatch/models/api_response.dart';
 class UserApiResponse extends ApiResponse {
   final String matcherUuid;
 
-  UserApiResponse({status, message, this.matcherUuid})
-      : super(status: status, message: message);
+  UserApiResponse({status, error, this.matcherUuid})
+      : super(status: status, error: error);
 
   factory UserApiResponse.fromJson(Map<String, dynamic> json) {
     final apiResponse = ApiResponse.fromJson(json);
     return UserApiResponse(
         status: apiResponse.status,
-        message: apiResponse.message,
+        error: apiResponse.error,
         matcherUuid:
             json.containsKey('matcher_uuid') ? json['matcher_uuid'] : '');
   }
