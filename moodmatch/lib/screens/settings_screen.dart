@@ -7,6 +7,7 @@ import 'package:moodmatch/widgets/setting_btn.dart';
 import 'package:moodmatch/api.dart';
 import 'package:flutter/services.dart';
 import 'package:moodmatch/widgets/flushbar_wrapper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const String id = 'settings_screen';
@@ -135,9 +136,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _getMatch() {
-    // TODO get match_id and matcher_uuid from shared preff
-    matcherUuid = 'TESTf6b8-2158-43a7-8c9c-d7a3e35d18b9';
+  void _getMatch() async {
+    // get match_id and matcher_uuid from shared preff
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    matchId = prefs.getInt('matchId') ?? 0;
+    matcherUuid = prefs.getString('matcherUuid') ?? '';
     matchId = 0;
     if (matchId > 0) {
       matched = true;
@@ -241,8 +244,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       });
                       // close the popup
                       Navigator.of(contextID).pop();
-                      // TODO save match id in shared preference
-                      matchId = match.matchId;
+                      // save match id in shared preference
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setInt('matchId', match.matchId);
                       // show flushbar to let user know of success
                       FlushbarWrapper().flushBarWrapper(
                         messageText: 'You have been successfully Partnered up!',

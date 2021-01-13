@@ -10,6 +10,7 @@ import 'package:moodmatch/widgets/status_widget.dart';
 import 'package:moodmatch/api.dart';
 import 'package:moodmatch/widgets/flushbar_wrapper.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = 'home_screen';
@@ -27,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     // call getStatuses after build
-    _getStatuses();
+    _setup();
   }
 
   @override
@@ -97,20 +98,34 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _getStatuses() async {
-    //TODO get matchid and matcheruuid from sharedpref
-    int matchId = 11;
-    String matcherUuid = '9c7aa3a1-a5dc-4cea-8ffd-abcf235913b8';
+  void _setup() async {
+    // get matchid and matcheruuid from sharedpref
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int matchId = prefs.getInt('matchId') ?? '';
+    String matcherUuid = prefs.getString('matcherUuid') ?? '';
+    String deviceId = prefs.getString('deviceId') ?? '';
 
-    StatusApiResponse status = await Api.getStatus(matchId, matcherUuid);
-    if (status == null) {
-      error = true;
+    // TODO check if the saved device id is the same as the one from firebase
+    if (deviceId != 'TODO change this to firebase token') {
+      // TODO update deviceId
+    }
+
+    matchId = 11;
+    matcherUuid = '9c7aa3a1-a5dc-4cea-8ffd-abcf235913b8';
+
+    if (matchId > 0) {
+      StatusApiResponse status = await Api.getStatus(matchId, matcherUuid);
+      if (status == null) {
+        error = true;
+      } else {
+        // update mood
+        setState(() {
+          youMood = status.you;
+          partnerMood = status.partner;
+        });
+      }
     } else {
-      // update mood
-      setState(() {
-        youMood = status.you;
-        partnerMood = status.partner;
-      });
+      // TODO show popup explaining how to match
     }
   }
 
