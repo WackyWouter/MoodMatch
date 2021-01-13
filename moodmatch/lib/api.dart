@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:moodmatch/models/api_response.dart';
+import 'package:moodmatch/models/history_api_response.dart';
 import 'package:moodmatch/models/status_api_response.dart';
 import 'package:moodmatch/models/match_api_response.dart';
 import 'package:moodmatch/constant.dart';
@@ -155,6 +156,33 @@ class Api {
 
     int statusCode = response.statusCode;
     ApiResponse matchResponse = ApiResponse.fromJson(jsonDecode(response.body));
+    if (statusCode == 200) {
+      if (matchResponse.status == 'ok') {
+        return matchResponse;
+      } else {
+        latestError = matchResponse.error;
+        return null;
+      }
+    } else {
+      latestError = statusCode.toString() + ' ' + response.reasonPhrase;
+      return null;
+    }
+  }
+
+  static Future<HistoryApiResponse> getHistory(
+      String matchUuid, int matchId, int mood) async {
+    Map<String, dynamic> body = {
+      'action': 'history',
+      'matcher_uuid': matchUuid,
+      'match_id': matchId
+    };
+    String jsonBody = json.encode(body);
+    http.Response response =
+        await http.post(kUrl, headers: headers, body: jsonBody);
+
+    int statusCode = response.statusCode;
+    HistoryApiResponse matchResponse =
+        HistoryApiResponse.fromJson(jsonDecode(response.body));
     if (statusCode == 200) {
       if (matchResponse.status == 'ok') {
         return matchResponse;
