@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const Color kLightPurple = Color(0xFF291F34);
 const Color kDarkPurple = Color(0xFF160E1F);
 const Color kNonGradientText = Color(0xFFFFFFFF);
-const Color kInputTextColor = Colors.black;
+const Color kHintTextColor = Color(0xFF919191);
 const Color kPurple = Color(0xFF6337FF);
 const Color kPink = Color(0xFFD751FF);
 const Color kError = Color(0xFFe50000);
@@ -22,8 +22,8 @@ const TextStyle kNormalTextStyle = TextStyle(
 
 InputDecoration kTextFieldDecoration = InputDecoration(
   errorMaxLines: 2,
-  hintText: 'Fill in...',
-  hintStyle: kNormalTextStyle.copyWith(color: kInputTextColor),
+  hintText: 'Partner\'s Match-code',
+  hintStyle: kNormalTextStyle.copyWith(color: kHintTextColor),
   errorStyle: kNormalTextStyle.copyWith(color: kError, fontSize: 14),
   filled: true,
   fillColor: Colors.white,

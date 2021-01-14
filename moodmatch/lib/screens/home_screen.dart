@@ -11,6 +11,7 @@ import 'package:moodmatch/api.dart';
 import 'package:moodmatch/widgets/flushbar_wrapper.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:moodmatch/widgets/alert_dialog_wrapper.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = 'home_screen';
@@ -101,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _setup() async {
     // get matchid and matcheruuid from sharedpref
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int matchId = prefs.getInt('matchId') ?? '';
+    int matchId = prefs.getInt('matchId') ?? 0;
     String matcherUuid = prefs.getString('matcherUuid') ?? '';
     String deviceId = prefs.getString('deviceId') ?? '';
 
@@ -110,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // TODO update deviceId
     }
 
-    matchId = 11;
+    matchId = 0;
     matcherUuid = '9c7aa3a1-a5dc-4cea-8ffd-abcf235913b8';
 
     if (matchId > 0) {
@@ -126,6 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     } else {
       // TODO show popup explaining how to match
+      _showExplanationDialog();
     }
   }
 
@@ -143,5 +145,28 @@ class _HomeScreenState extends State<HomeScreen> {
             leftBarIndicatorColor: kError);
       }
     });
+  }
+
+  void _showExplanationDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext contextED) {
+        // return object of type Dialog
+        return AlertDialogWrapper(
+            title: 'Explanation',
+            content: Text(
+                "With this app you're able to notify you're partner that you are in the mood. The snowflake means not in the mood and the flame means in the mood. If you click the top left icon you can see you and your partners history. If you click on the top right you can match up with your partner. Do you wish to match up with your partner right now?",
+                style: kNormalTextStyle),
+            btn1Text: 'Not right now',
+            btn1OnPressed: () {
+              Navigator.of(contextED).pop();
+            },
+            btn2Text: 'Yes',
+            btn2OnPressed: () {
+              Navigator.pushNamed(context, SettingsScreen.id);
+            });
+      },
+    );
   }
 }
