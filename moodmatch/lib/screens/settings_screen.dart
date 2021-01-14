@@ -8,6 +8,7 @@ import 'package:moodmatch/api.dart';
 import 'package:flutter/services.dart';
 import 'package:moodmatch/widgets/flushbar_wrapper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:moodmatch/widgets/alert_dialog_wrapper.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const String id = 'settings_screen';
@@ -153,34 +154,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (BuildContext contextCD) {
         // return object of type Dialog
-        return AlertDialog(
-          backgroundColor: kLightPurple,
-          title: Text(
-            "Change partner?",
-            style: kNormalTextStyle.copyWith(fontSize: 20),
-          ),
-          content: Text(
-              "Are you sure you want to match with a new partner? This will remove your current partner.",
-              style: kNormalTextStyle),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            FlatButton(
-              child: Text("Cancel",
-                  style: kNormalTextStyle.copyWith(color: kPurple)),
-              onPressed: () {
-                Navigator.of(contextCD).pop();
-              },
-            ),
-            FlatButton(
-              child: Text("I'm sure!",
-                  style: kNormalTextStyle.copyWith(color: kPurple)),
-              onPressed: () {
-                Navigator.of(contextCD).pop();
-                _showInputDialog();
-              },
-            ),
-          ],
-        );
+        return AlertDialogWrapper(
+            title: 'Change partner',
+            content: Text(
+                "Are you sure you want to match with a new partner? This will remove your current partner.",
+                style: kNormalTextStyle),
+            btn1Text: 'Cancel',
+            btn1OnPressed: () {
+              Navigator.of(contextCD).pop();
+            },
+            btn2Text: 'I\'m sure!',
+            btn2OnPressed: () {
+              Navigator.of(contextCD).pop();
+              _showInputDialog();
+            });
       },
     );
   }
@@ -193,12 +180,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         // return object of type Dialog
         // Use stateful builder to be able to use setstate and only refresh the alertdialog
         return StatefulBuilder(builder: (contextID2, setStateID2) {
-          return AlertDialog(
-            backgroundColor: kLightPurple,
-            title: Text(
-              "Enter Match-code",
-              style: kNormalTextStyle.copyWith(fontSize: 20),
-            ),
+          return AlertDialogWrapper(
+            title: 'Enter Match-code',
             content: Container(
               width: 300,
               height: 100,
@@ -211,57 +194,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
               ),
             ),
-            actions: <Widget>[
-              // usually buttons at the bottom of the dialog
-              FlatButton(
-                child: Text("Cancel",
-                    style: kNormalTextStyle.copyWith(color: kPurple)),
-                onPressed: () {
+            btn1Text: 'Cancel',
+            btn1OnPressed: () {
+              Navigator.of(contextID).pop();
+            },
+            btn2Text: 'Submit',
+            btn2OnPressed: () async {
+              // check input is not empty
+              if (myController.text.isNotEmpty) {
+                MatchApiResponse match = await Api.changePartner(
+                    myController.text, matcherUuid, matched);
+                // check if call went wrong
+                if (match == null) {
+                  setStateID2(() {
+                    error = Api.latestError;
+                  });
+                } else {
+                  // update matched var and clean the error var
+                  // Do this in two different set states bcs of different scopes
+                  setStateID2(() {
+                    error = null;
+                  });
+                  setState(() {
+                    matched = true;
+                  });
+                  // close the popup
                   Navigator.of(contextID).pop();
-                },
-              ),
-              FlatButton(
-                child: Text("Submit",
-                    style: kNormalTextStyle.copyWith(color: kPurple)),
-                onPressed: () async {
-                  // check input is not empty
-                  if (myController.text.isNotEmpty) {
-                    MatchApiResponse match = await Api.changePartner(
-                        myController.text, matcherUuid, matched);
-                    // check if call went wrong
-                    if (match == null) {
-                      setStateID2(() {
-                        error = Api.latestError;
-                      });
-                    } else {
-                      // update matched var and clean the error var
-                      // Do this in two different set states bcs of different scopes
-                      setStateID2(() {
-                        error = null;
-                      });
-                      setState(() {
-                        matched = true;
-                      });
-                      // close the popup
-                      Navigator.of(contextID).pop();
-                      // save match id in shared preference
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      await prefs.setInt('matchId', match.matchId);
-                      // show flushbar to let user know of success
-                      FlushbarWrapper().flushBarWrapper(
-                        messageText: 'You have been successfully Partnered up!',
-                        context: context,
-                      );
-                    }
-                  } else {
-                    setStateID2(() {
-                      error = 'Please fill in the textfield.';
-                    });
-                  }
-                },
-              ),
-            ],
+                  // save match id in shared preference
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.setInt('matchId', match.matchId);
+                  // show flushbar to let user know of success
+                  FlushbarWrapper().flushBarWrapper(
+                    messageText: 'You have been successfully Partnered up!',
+                    context: context,
+                  );
+                }
+              } else {
+                setStateID2(() {
+                  error = 'Please fill in the textfield.';
+                });
+              }
+            },
           );
         });
       },
