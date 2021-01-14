@@ -94,7 +94,7 @@ class Api {
     }
   }
 
-  static Future<ApiResponse> updateDeviceId(String deviceId) async {
+  static Future<bool> updateDeviceId(String deviceId) async {
     Map<String, dynamic> body = {
       'action': 'newUser',
       'device_id': deviceId,
@@ -107,10 +107,10 @@ class Api {
     ApiResponse matchResponse = ApiResponse.fromJson(jsonDecode(response.body));
     if (statusCode == 200) {
       if (matchResponse.status == 'ok') {
-        return matchResponse;
+        return true;
       } else {
         latestError = matchResponse.error;
-        return null;
+        return false;
       }
     } else {
       latestError = statusCode.toString() + ' ' + response.reasonPhrase;
@@ -118,7 +118,7 @@ class Api {
     }
   }
 
-  static Future<ApiResponse> resetPartner(String matchUuid) async {
+  static Future<bool> resetPartner(String matchUuid) async {
     Map<String, dynamic> body = {
       'action': 'resetPartner',
       'matcher_uuid': matchUuid,
@@ -131,10 +131,10 @@ class Api {
     ApiResponse matchResponse = ApiResponse.fromJson(jsonDecode(response.body));
     if (statusCode == 200) {
       if (matchResponse.status == 'ok') {
-        return matchResponse;
+        return true;
       } else {
         latestError = matchResponse.error;
-        return null;
+        return false;
       }
     } else {
       latestError = statusCode.toString() + ' ' + response.reasonPhrase;
@@ -142,7 +142,7 @@ class Api {
     }
   }
 
-  static Future<ApiResponse> addNotification(
+  static Future<bool> addNotification(
       String matchUuid, int matchId, int mood) async {
     Map<String, dynamic> body = {
       'action': 'addNotification',
@@ -158,10 +158,10 @@ class Api {
     ApiResponse matchResponse = ApiResponse.fromJson(jsonDecode(response.body));
     if (statusCode == 200) {
       if (matchResponse.status == 'ok') {
-        return matchResponse;
+        return true;
       } else {
         latestError = matchResponse.error;
-        return null;
+        return false;
       }
     } else {
       latestError = statusCode.toString() + ' ' + response.reasonPhrase;

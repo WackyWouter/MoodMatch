@@ -42,6 +42,5 @@ class AlertDialogWrapper extends StatelessWidget {
             : SizedBox(),
       ],
     );
-    ;
   }
 }

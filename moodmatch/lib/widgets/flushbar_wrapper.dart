@@ -33,4 +33,35 @@ class FlushbarWrapper {
       duration: Duration(seconds: duration),
     )..show(context);
   }
+
+  void flushBarErrorWrapper(
+      {Function onPressed,
+      String btnText,
+      int duration = 10,
+      @required String messageText,
+      @required BuildContext context}) {
+    Flushbar(
+      icon: Icon(
+        Icons.error_outline,
+        color: kError,
+      ),
+      borderRadius: 10,
+      dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+      shouldIconPulse: false,
+      isDismissible: true,
+      backgroundColor: kDarkPurple,
+      leftBarIndicatorColor: kError,
+      mainButton: btnText != null
+          ? FlatButton(
+              onPressed: onPressed ?? () {},
+              child: Text(
+                btnText,
+                style: TextStyle(color: kPurple),
+              ),
+            )
+          : null,
+      messageText: Text(messageText, style: kNormalTextStyle),
+      duration: Duration(seconds: duration),
+    )..show(context);
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodmatch/constant.dart';
+import 'package:moodmatch/models/api_response.dart';
 import 'package:moodmatch/models/status_api_response.dart';
 import 'package:moodmatch/widgets/gradient_text.dart';
 import 'package:moodmatch/widgets/notification_button.dart';
@@ -108,10 +109,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // TODO check if the saved device id is the same as the one from firebase
     if (deviceId != 'TODO change this to firebase token') {
-      // TODO update deviceId
+      // check if update deviceId went correctly
+      bool success = await Api.updateDeviceId(deviceId);
+      if (!success) {
+        FlushbarWrapper().flushBarErrorWrapper(
+            messageText:
+                Api.latestError ?? 'An error occurred. Please try agian later.',
+            context: context);
+      }
     }
 
-    matchId = 0;
+    matchId = 11;
     matcherUuid = '9c7aa3a1-a5dc-4cea-8ffd-abcf235913b8';
 
     if (matchId > 0) {
@@ -126,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     } else {
-      // TODO show popup explaining how to match
+      // show popup explaining how to match
       _showExplanationDialog();
     }
   }
@@ -134,15 +142,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void _checkForError() {
     Timer(Duration(seconds: 2), () {
       if (error) {
-        FlushbarWrapper().flushBarWrapper(
+        FlushbarWrapper().flushBarErrorWrapper(
             messageText:
                 Api.latestError ?? 'An error occurred. Please try agian later.',
-            context: context,
-            icon: Icon(
-              Icons.error_outline,
-              color: kError,
-            ),
-            leftBarIndicatorColor: kError);
+            context: context);
       }
     });
   }
@@ -164,6 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             btn2Text: 'Yes',
             btn2OnPressed: () {
+              Navigator.of(contextED).pop();
               Navigator.pushNamed(context, SettingsScreen.id);
             });
       },

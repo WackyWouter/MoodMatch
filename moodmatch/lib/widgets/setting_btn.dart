@@ -8,7 +8,6 @@ class SettingBtn extends StatelessWidget {
 
   SettingBtn({this.icon, @required this.text, this.onTap});
 
-//	TODO see if i can make a separate widget for that container since its used very often
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
