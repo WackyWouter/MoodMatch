@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:moodmatch/constant.dart';
-import 'package:moodmatch/models/api_response.dart';
 import 'package:moodmatch/models/status_api_response.dart';
 import 'package:moodmatch/widgets/gradient_text.dart';
 import 'package:moodmatch/widgets/notification_button.dart';
@@ -112,10 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // check if update deviceId went correctly
       bool success = await Api.updateDeviceId(deviceId);
       if (!success) {
-        FlushbarWrapper().flushBarErrorWrapper(
-            messageText:
-                Api.latestError ?? 'An error occurred. Please try agian later.',
-            context: context);
+        error = true;
       }
     }
 

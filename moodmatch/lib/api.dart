@@ -170,7 +170,7 @@ class Api {
   }
 
   static Future<HistoryApiResponse> getHistory(
-      String matchUuid, int matchId, int mood) async {
+      String matchUuid, int matchId) async {
     Map<String, dynamic> body = {
       'action': 'history',
       'matcher_uuid': matchUuid,
