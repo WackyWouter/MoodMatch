@@ -69,7 +69,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 itemBuilder: (context, index) {
                                   NotificationHistory notification =
                                       notificationList[index];
-                                  return NotificationItem();
+                                  return NotificationItem(
+                                    isme: notification.user == matcherUuid,
+                                    mood: notification.mood,
+                                    date: notification.date,
+                                  );
                                 },
                                 itemCount: notificationList.length,
                               )
