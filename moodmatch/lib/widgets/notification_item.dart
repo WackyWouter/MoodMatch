@@ -16,7 +16,7 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(5.0),
       child: Align(
           alignment: isme ? Alignment.centerRight : Alignment.centerLeft,
           child: Container(
