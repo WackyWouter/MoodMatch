@@ -63,18 +63,26 @@ class _HistoryScreenState extends State<HistoryScreen> {
               SizedBox(height: 30),
               Expanded(
                 child: Container(
+                    child: ScrollConfiguration(
+                  behavior: ScrollBehavior(),
+                  child: GlowingOverscrollIndicator(
+                    axisDirection: AxisDirection.down,
+                    color: kPurple,
                     child:
                         notificationList != null && notificationList.length > 0
                             ? ListView.builder(
+                                padding: const EdgeInsets.only(bottom: 8),
                                 itemBuilder: (context, index) {
                                   NotificationHistory notification =
                                       notificationList[index];
                                   return NotificationItem(
-                                    isme: notification.user == matcherUuid,
+                                    isMe: notification.user == matcherUuid,
                                     mood: notification.mood,
-                                    // make these be actual dates not datetime
                                     date: notification.date,
-                                    previousDate: index != 0 ? notificationList[index].date : '',
+                                    previousDate: index != 0
+                                        ? notificationList[index - 1].date
+                                        : '',
+                                    time: notification.time,
                                   );
                                 },
                                 itemCount: notificationList.length,
@@ -84,7 +92,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 child: Text(
                                   message,
                                   style: kNormalTextStyle,
-                                ))),
+                                )),
+                  ),
+                )),
               )
             ],
           ),
@@ -93,6 +103,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   _getHistory() async {
     // get match_id and matcher_uuid from shared preff
+//	  TODO change these to 0 and  '' for production
     SharedPreferences prefs = await SharedPreferences.getInstance();
     matchId = prefs.getInt('matchId') ?? 11;
     matcherUuid = prefs.getString('matcherUuid') ??
