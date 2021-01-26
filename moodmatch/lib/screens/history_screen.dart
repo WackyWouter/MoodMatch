@@ -72,6 +72,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   return NotificationItem(
                                     isme: notification.user == matcherUuid,
                                     mood: notification.mood,
+                                    // make these be actual dates not datetime
                                     date: notification.date,
                                     previousDate: index != 0 ? notificationList[index].date : '',
                                   );
