@@ -73,6 +73,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     isme: notification.user == matcherUuid,
                                     mood: notification.mood,
                                     date: notification.date,
+                                    previousDate: index != 0 ? notificationList[index].date : '',
                                   );
                                 },
                                 itemCount: notificationList.length,
