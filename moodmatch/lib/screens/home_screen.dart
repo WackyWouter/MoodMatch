@@ -104,10 +104,6 @@ class _HomeScreenState extends State<HomeScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int matchId = prefs.getInt('matchId');
     String matcherUuid = prefs.getString('matcherUuid');
-    String deviceId = prefs.getString('deviceId');
-
-    matchId = 11;
-    matcherUuid = '9c7aa3a1-a5dc-4cea-8ffd-abcf235913b8';
 
     if (matchId > 0) {
       StatusApiResponse status = await Api.getStatus(matchId, matcherUuid);
@@ -146,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return AlertDialogWrapper(
             title: 'Explanation',
             content: Text(
-                "With this app you're able to notify you're partner that you are in the mood. The snowflake means not in the mood and the flame means in the mood. If you click the top left icon you can see you and your partners history. If you click on the top right you can match up with your partner. Do you wish to match up with your partner right now?",
+                "With this app you are able to notify your partner that you are in the mood. The snowflake means not in the mood and the flame means in the mood. If you click the top left icon you can see you and your partner\'s history. If you click on the top right you can match up with your partner. Do you wish to match up with your partner right now?",
                 style: kNormalTextStyle),
             btn1Text: 'Not right now',
             btn1OnPressed: () {

@@ -140,8 +140,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _getMatch() async {
     // get match_id and matcher_uuid from shared preff
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    matchId = prefs.getInt('matchId');
-    matcherUuid = prefs.getString('matcherUuid');
+    setState(() {
+      matchId = prefs.getInt('matchId');
+      matcherUuid = prefs.getString('matcherUuid');
+    });
+
+    print(matcherUuid);
 
     if (matchId > 0) {
       matched = true;
