@@ -2,7 +2,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:moodmatch/models/user_api_response.dart';
 import 'package:moodmatch/api.dart';
 import 'package:moodmatch/push_notifications/push_notification_message.dart';
-import 'package:uuid/uuid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PushNotificationService {

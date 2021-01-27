@@ -35,7 +35,6 @@ dependencies:
   intl: ^0.16.1
   firebase_messaging: ^7.0.3
   overlay_support: ^1.0.5
-  uuid: 2.2.2
 
 
 dev_dependencies:
