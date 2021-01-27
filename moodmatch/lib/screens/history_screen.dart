@@ -44,12 +44,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SmallIconButton(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    image: AssetImage('lib/assets/images/back.png'),
-                  ),
+                  SizedBox(width: 50, height: 50),
                   Hero(
                     tag: 'appName',
                     child: GradientText(
@@ -57,7 +52,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       kAppNameStyle.copyWith(fontSize: 40),
                     ),
                   ),
-                  SizedBox(width: 50, height: 50)
+                  SmallIconButton(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    image: AssetImage('lib/assets/images/backmirrored.png'),
+                  )
                 ],
               ),
               SizedBox(height: 30),

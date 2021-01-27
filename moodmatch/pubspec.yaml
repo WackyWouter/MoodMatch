@@ -54,15 +54,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - lib/assets/images/back.png
-    - lib/assets/images/copy.png
-    - lib/assets/images/edit.png
-    - lib/assets/images/fire_gradient.png
-    - lib/assets/images/history.png
-    - lib/assets/images/settings.png
-    - lib/assets/images/snowflake.png
-    - lib/assets/images/firegrey.png
-    - lib/assets/images/snowflakegrey.png
+    - lib/assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
