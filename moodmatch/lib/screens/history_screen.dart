@@ -105,12 +105,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
     // get match_id and matcher_uuid from shared preff
 //	  TODO change these to 0 and  '' for production
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    matchId = prefs.getInt('matchId') ?? 11;
-    matcherUuid = prefs.getString('matcherUuid') ??
-        '9c7aa3a1-a5dc-4cea-8ffd-abcf235913b8';
+    matchId = prefs.getInt('matchId');
+    matcherUuid = prefs.getString('matcherUuid');
     // if user is matched get history
     if (matchId > 0) {
-      print("matchid > 0");
       HistoryApiResponse history = await Api.getHistory(matcherUuid, matchId);
 
       // set error = true if it went wrong

@@ -81,6 +81,7 @@ class Api {
     int statusCode = response.statusCode;
     UserApiResponse matchResponse =
         UserApiResponse.fromJson(jsonDecode(response.body));
+    print(response.body);
     if (statusCode == 200) {
       if (matchResponse.status == 'ok') {
         return matchResponse;
@@ -94,10 +95,12 @@ class Api {
     }
   }
 
-  static Future<bool> updateDeviceId(String deviceId) async {
+  static Future<bool> updateDeviceId(
+      String deviceId, String matcherUuid) async {
     Map<String, dynamic> body = {
-      'action': 'newUser',
+      'action': 'updateDeviceId',
       'device_id': deviceId,
+      'matcher_uuid': matcherUuid
     };
     String jsonBody = json.encode(body);
     http.Response response =
@@ -105,6 +108,7 @@ class Api {
 
     int statusCode = response.statusCode;
     ApiResponse matchResponse = ApiResponse.fromJson(jsonDecode(response.body));
+    print(response.body);
     if (statusCode == 200) {
       if (matchResponse.status == 'ok') {
         return true;

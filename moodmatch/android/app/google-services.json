@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "306249500784",
+    "project_id": "moodmatch-182b3",
+    "storage_bucket": "moodmatch-182b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306249500784:android:f35cb45c69d9ec1f7eccb5",
+        "android_client_info": {
+          "package_name": "com.example.moodmatch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306249500784-s94rfot5mke2os995mncmh0ntssfolaa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSvxTA1H41G5fjGagNwH-YSnCBzgJIjXk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306249500784-s94rfot5mke2os995mncmh0ntssfolaa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

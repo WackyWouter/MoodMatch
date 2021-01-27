@@ -102,18 +102,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void _setup() async {
     // get matchid and matcheruuid from sharedpref
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int matchId = prefs.getInt('matchId') ?? 0;
-    String matcherUuid = prefs.getString('matcherUuid') ?? '';
-    String deviceId = prefs.getString('deviceId') ?? '';
-
-    // TODO check if the saved device id is the same as the one from firebase
-    if (deviceId != 'TODO change this to firebase token') {
-      // check if update deviceId went correctly
-      bool success = await Api.updateDeviceId(deviceId);
-      if (!success) {
-        error = true;
-      }
-    }
+    int matchId = prefs.getInt('matchId');
+    String matcherUuid = prefs.getString('matcherUuid');
+    String deviceId = prefs.getString('deviceId');
 
     matchId = 11;
     matcherUuid = '9c7aa3a1-a5dc-4cea-8ffd-abcf235913b8';
