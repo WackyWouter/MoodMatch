@@ -12,7 +12,7 @@ class StatusApiResponse extends ApiResponse {
     return StatusApiResponse(
         status: apiResponse.status,
         error: apiResponse.error,
-        you: json.containsKey('you') ? json['you'] : 0,
-        partner: json.containsKey('partner') ? json['partner'] : 0);
+        you: json.containsKey('you') ? json['you'] : 2,
+        partner: json.containsKey('partner') ? json['partner'] : 2);
   }
 }

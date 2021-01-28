@@ -3,7 +3,7 @@ import 'package:moodmatch/constant.dart';
 
 class StatusWidget extends StatelessWidget {
   final String title;
-//  0 = nothing selected, 1 = horny, 2 = not horny
+//  0 = not horny, 1 = horny, 2 = not set
   final int inTheMood;
 
   StatusWidget({@required this.title, this.inTheMood});
@@ -24,7 +24,7 @@ class StatusWidget extends StatelessWidget {
         Row(
           children: [
             Image(
-              image: AssetImage(inTheMood == 2
+              image: AssetImage(inTheMood == 1
                   ? 'lib/assets/images/snowflake.png'
                   : 'lib/assets/images/snowflakegrey.png'),
               height: 35,
