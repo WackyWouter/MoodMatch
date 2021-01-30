@@ -21,7 +21,6 @@ class PushNotificationService {
 
     // if no device id key found handle it as a new user
     if (!(prefs.containsKey('deviceId'))) {
-      print('new');
       prefs.setString('deviceId', token);
       UserApiResponse userApiResponse = await Api.newUser(token);
       if (userApiResponse.status == 'ok') {
@@ -32,12 +31,12 @@ class PushNotificationService {
         throw (Api.latestError);
       }
     }
+    prefs.setInt('matchId', 16);
 
     // check for token refresh if refreshed update shared pref and DB
     _fcm.onTokenRefresh.listen((newToken) async {
       // check if pref token is same as new token
       if (!(prefs.getString('deviceId') == newToken)) {
-        print('refresh');
         prefs.setString('deviceId', newToken);
         bool success =
             await Api.updateDeviceId(newToken, prefs.getString('matcherUuid'));

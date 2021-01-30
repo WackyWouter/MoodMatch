@@ -24,7 +24,7 @@ class StatusWidget extends StatelessWidget {
         Row(
           children: [
             Image(
-              image: AssetImage(inTheMood == 1
+              image: AssetImage(inTheMood == 0
                   ? 'lib/assets/images/snowflake.png'
                   : 'lib/assets/images/snowflakegrey.png'),
               height: 35,

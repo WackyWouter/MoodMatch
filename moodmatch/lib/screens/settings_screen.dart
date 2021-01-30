@@ -130,7 +130,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   }
                 },
                 icon: 'lib/assets/images/edit.png',
-                text: 'NEW PARTNER'),
+                text: matched ? 'CHANGE PARTNER' : 'NEW PARTNER'),
           ],
         ),
       ),
@@ -144,8 +144,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       matchId = prefs.getInt('matchId');
       matcherUuid = prefs.getString('matcherUuid');
     });
-
-    print(matcherUuid);
 
     if (matchId > 0) {
       matched = true;

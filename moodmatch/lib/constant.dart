@@ -9,7 +9,16 @@ const Color kPurple = Color(0xFF6337FF);
 const Color kPink = Color(0xFFD751FF);
 const Color kError = Color(0xFFe50000);
 const String kAppName = 'MOOD\nMATCH';
+const String kAppNameNotifications = 'MoodMatch';
+const String kServerKey =
+    'AAAAR03kiHA:APA91bEOLOoOegFU9zyCEKdBF-uSYO2Wqb1HWYxxjAAaaOdjlcVhpr-xovTZXNuu5phIgll0fShRExhyWHWawh7lSRd1JFUpy-vQD6Wl1Znzgf523-l3hkR8ChkGvSITTSOVRJVZkx8D';
 const String kUrl = 'http://wfcbosch-nl.stackstaging.com/MoodMatch/index.php/';
+const String kNotificationUrl = 'https://fcm.googleapis.com/fcm/send';
+const kUserMood = 'YOU ARE IN THE MOOD';
+const kUserNotMood = 'YOU ARE NOT IN THE MOOD';
+const kPartnerMood = 'YOUR PARTNER IS IN THE MOOD';
+const kPartnerNotMood = 'YOUR PARTNER IS NOT IN THE MOOD';
+const kDefaultError = 'An error occurred. Please try again later.';
 const TextStyle kAppNameStyle = TextStyle(
   fontFamily: 'RobotoLocal',
   fontStyle: FontStyle.italic,

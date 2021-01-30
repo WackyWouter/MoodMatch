@@ -11,7 +11,6 @@ class NotificationItem extends StatelessWidget {
   final String previousDate;
   final String time;
 
-//  TODO add time in bottom corner
   NotificationItem(
       {@required this.isMe,
       @required this.date,

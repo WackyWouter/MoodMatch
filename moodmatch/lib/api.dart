@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:moodmatch/models/api_response.dart';
+import 'package:moodmatch/models/check_match_api_response.dart';
+import 'package:moodmatch/models/device_id_api_response.dart';
 import 'package:moodmatch/models/history_api_response.dart';
 import 'package:moodmatch/models/status_api_response.dart';
 import 'package:moodmatch/models/match_api_response.dart';
@@ -81,7 +83,7 @@ class Api {
     int statusCode = response.statusCode;
     UserApiResponse matchResponse =
         UserApiResponse.fromJson(jsonDecode(response.body));
-    print(response.body);
+
     if (statusCode == 200) {
       if (matchResponse.status == 'ok') {
         return matchResponse;
@@ -108,7 +110,6 @@ class Api {
 
     int statusCode = response.statusCode;
     ApiResponse matchResponse = ApiResponse.fromJson(jsonDecode(response.body));
-    print(response.body);
     if (statusCode == 200) {
       if (matchResponse.status == 'ok') {
         return true;
@@ -147,10 +148,10 @@ class Api {
   }
 
   static Future<bool> addNotification(
-      String matchUuid, int matchId, int mood) async {
+      String matcherUuid, int matchId, int mood) async {
     Map<String, dynamic> body = {
       'action': 'addNotification',
-      'matcher_uuid': matchUuid,
+      'matcher_uuid': matcherUuid,
       'match_id': matchId,
       'mood': mood,
     };
@@ -169,7 +170,7 @@ class Api {
       }
     } else {
       latestError = statusCode.toString() + ' ' + response.reasonPhrase;
-      return null;
+      return false;
     }
   }
 
@@ -192,6 +193,58 @@ class Api {
         return matchResponse;
       } else {
         latestError = matchResponse.error;
+        return null;
+      }
+    } else {
+      latestError = statusCode.toString() + ' ' + response.reasonPhrase;
+      return null;
+    }
+  }
+
+  static Future<DeviceIdApiResponse> getPartnerDeviceId(
+      String matchUuid, int matchId) async {
+    Map<String, dynamic> body = {
+      'action': 'partnerDevice',
+      'matcher_uuid': matchUuid,
+      'match_id': matchId
+    };
+    String jsonBody = json.encode(body);
+    http.Response response =
+        await http.post(kUrl, headers: headers, body: jsonBody);
+
+    int statusCode = response.statusCode;
+    DeviceIdApiResponse deviceIdApiResponse =
+        DeviceIdApiResponse.fromJson(jsonDecode(response.body));
+    if (statusCode == 200) {
+      if (deviceIdApiResponse.status == 'ok') {
+        return deviceIdApiResponse;
+      } else {
+        latestError = deviceIdApiResponse.error;
+        return null;
+      }
+    } else {
+      latestError = statusCode.toString() + ' ' + response.reasonPhrase;
+      return null;
+    }
+  }
+
+  static Future<CheckMatchApiResponse> checkMatched(String matchUuid) async {
+    Map<String, dynamic> body = {
+      'action': 'checkMatch',
+      'matcher_uuid': matchUuid
+    };
+    String jsonBody = json.encode(body);
+    http.Response response =
+        await http.post(kUrl, headers: headers, body: jsonBody);
+
+    int statusCode = response.statusCode;
+    CheckMatchApiResponse checkMatchApiResponse =
+        CheckMatchApiResponse.fromJson(jsonDecode(response.body));
+    if (statusCode == 200) {
+      if (checkMatchApiResponse.status == 'ok') {
+        return checkMatchApiResponse;
+      } else {
+        latestError = checkMatchApiResponse.error;
         return null;
       }
     } else {

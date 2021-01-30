@@ -18,10 +18,8 @@ class NotificationItemText extends StatelessWidget {
           maxWidth: maxContainerWidth - 90),
       child: Text(
         mood == 1
-            ? (isMe ? 'YOU ARE IN THE MOOD' : 'YOUR PARTNER IS IN THE MOOD')
-            : (isMe
-                ? 'YOU ARE NOT IN THE MOOD'
-                : 'YOUR PARTNER IS NOT IN THE MOOD'),
+            ? (isMe ? kUserMood : kPartnerMood)
+            : (isMe ? kUserNotMood : kPartnerNotMood),
         textAlign: TextAlign.right,
         style: kNormalTextStyle,
         maxLines: 2,

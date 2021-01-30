@@ -112,7 +112,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     // if user is matched get history
     if (matchId > 0) {
       HistoryApiResponse history = await Api.getHistory(matcherUuid, matchId);
-
       // set error = true if it went wrong
       if (history == null) {
         setState(() {
@@ -134,9 +133,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     Timer(Duration(seconds: 2), () {
       if (error) {
         FlushbarWrapper().flushBarErrorWrapper(
-            messageText:
-                Api.latestError ?? 'An error occurred. Please try again later.',
-            context: context);
+            messageText: Api.latestError ?? kDefaultError, context: context);
       }
     });
   }
