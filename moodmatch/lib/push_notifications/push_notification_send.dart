@@ -34,9 +34,6 @@ class PushNotificationSend {
       body: jsonEncode(body),
     );
 
-    print('body');
-    print(response);
-
     int statusCode = response.statusCode;
     FcmResponse fcmResponse = FcmResponse.fromJson(jsonDecode(response.body));
 

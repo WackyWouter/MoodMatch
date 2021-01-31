@@ -5,6 +5,7 @@ import 'package:moodmatch/screens/landing_screen.dart';
 import 'package:moodmatch/screens/settings_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:moodmatch/push_notifications/push_notification_service.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 void main() {
   runApp(MoodMatch());
