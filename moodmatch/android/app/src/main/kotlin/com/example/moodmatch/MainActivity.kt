@@ -1,5 +1,6 @@
 package com.example.moodmatch
 
+import android.app.Notification
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -15,6 +16,12 @@ import android.app.NotificationChannel;
 import android.net.Uri;
 import android.media.AudioAttributes;
 import android.content.ContentResolver;
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.opengl.Visibility
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 
 
 class MainActivity: FlutterActivity() {
@@ -42,6 +49,10 @@ class MainActivity: FlutterActivity() {
 
     }
 
+    // https://developer.android.com/reference/android/app/NotificationChannel#setImportance(int)
+    // https://developer.android.com/reference/android/app/NotificationChannel
+    // https://rechor.medium.com/creating-notification-channels-in-flutter-android-e81e26b33bec
+    // https://itnext.io/android-notification-channel-as-deep-as-possible-1a5b08538c87
     private fun createNotificationChannel(mapData: HashMap<String,String>): Boolean {
         val completed: Boolean
         if (VERSION.SDK_INT >= VERSION_CODES.O) {
@@ -61,10 +72,33 @@ class MainActivity: FlutterActivity() {
                     .build();
 
             mChannel.setSound(soundUri, att)
+            mChannel.lightColor = Color.rgb(99,55,255);
+            mChannel.enableLights(true);
+            mChannel.vibrationPattern = longArrayOf(500L, 1000L);
+            mChannel.enableVibration(true);
+            mChannel.importance = NotificationManager.IMPORTANCE_HIGH;
+            mChannel.shouldShowLights();
+            mChannel.shouldVibrate();
+            mChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC;
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(mChannel)
+
+            // TODO fix app icon
+            // https://stackoverflow.com/questions/54056662/firebase-notification-is-grey-flutter
+            // https://stackoverflow.com/questions/39828704/firebase-notification-always-shows-blank-icon
+            // https://stackoverflow.com/questions/46676014/how-to-change-the-android-notification-icon-status-bar-icon-for-push-notificatio
+//           https://stackoverflow.com/questions/28387602/notification-bar-icon-turns-white-in-android-5-lollipop
+//            val builder = Notification.Builder(this, mapData["id"]).also {
+//                it.setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.appicon36));
+//                it.setSmallIcon(R.drawable.appicon36);
+//
+//            }
+//            val notification = builder.build();
+//            val notificationId = 0;
+//
+//            //notificationManager.notify(notificationId, notification);
             completed = true
         }
         else{
