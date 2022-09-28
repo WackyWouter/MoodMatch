@@ -1,21 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:moodmatch/api.dart';
 import 'package:moodmatch/constant.dart';
 import 'package:moodmatch/models/check_match_api_response.dart';
 import 'package:moodmatch/models/device_id_api_response.dart';
-import 'package:moodmatch/models/fcm_response.dart';
 import 'package:moodmatch/models/status_api_response.dart';
+import 'package:moodmatch/screens/history_screen.dart';
+import 'package:moodmatch/screens/settings_screen.dart';
+import 'package:moodmatch/widgets/alert_dialog_wrapper.dart';
+import 'package:moodmatch/widgets/flushbar_wrapper.dart';
 import 'package:moodmatch/widgets/gradient_text.dart';
 import 'package:moodmatch/widgets/notification_button.dart';
 import 'package:moodmatch/widgets/small_icon_button.dart';
-import 'package:moodmatch/screens/history_screen.dart';
-import 'package:moodmatch/screens/settings_screen.dart';
 import 'package:moodmatch/widgets/status_widget.dart';
-import 'package:moodmatch/api.dart';
-import 'package:moodmatch/widgets/flushbar_wrapper.dart';
-import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:moodmatch/widgets/alert_dialog_wrapper.dart';
-import 'package:moodmatch/push_notifications/push_notification_send.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = 'home_screen';
@@ -44,75 +43,99 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: kLightPurple,
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SmallIconButton(
-                  onTap: () {
-                    Navigator.pushNamed(context, HistoryScreen.id)
-                        .then((value) {
-                      // make a check if user got matched with if matched get current status
-                      checkifMatched();
-                    });
-                  },
-                  image: AssetImage('lib/assets/images/history.png'),
-                ),
-                Hero(
-                  tag: 'appName',
-                  child: GradientText(
-                    kAppName,
-                    kAppNameStyle.copyWith(fontSize: 40),
+        child: Container(
+          padding: new EdgeInsets.fromLTRB(10, 10, 10, 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SmallIconButton(
+                    onTap: () {
+                      Navigator.pushNamed(context, HistoryScreen.id)
+                          .then((value) {
+                        // make a check if user got matched with if matched get current status
+                        checkifMatched();
+                      });
+                    },
+                    image: AssetImage('lib/assets/images/history.png'),
                   ),
-                ),
-                SmallIconButton(
-                  onTap: () {
-                    Navigator.pushNamed(context, SettingsScreen.id)
-                        .then((value) {
-                      // make a check if user got matched with if matched get current status
-                      checkifMatched();
-                    });
-                  },
-                  image: AssetImage('lib/assets/images/settings.png'),
-                ),
-              ],
-            ),
-            Container(
-              width: 350,
-              height: 100,
-              decoration: BoxDecoration(
-                  color: kDarkPurple,
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
+                  Hero(
+                    tag: 'appName',
+                    child: GradientText(
+                      kAppName,
+                      kAppNameStyle.copyWith(fontSize: 40),
+                    ),
+                  ),
+                  SmallIconButton(
+                    onTap: () {
+                      Navigator.pushNamed(context, SettingsScreen.id)
+                          .then((value) {
+                        // make a check if user got matched with if matched get current status
+                        checkifMatched();
+                      });
+                    },
+                    image: AssetImage('lib/assets/images/settings.png'),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(),
+                width: 350,
+                height: 100,
+                decoration: BoxDecoration(
+                    color: kDarkPurple,
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
 //                      TODO make this container swippable so that you can swipe through multiple partners if you have multiple partners
-                      StatusWidget(title: 'You', inTheMood: youMood),
-                      StatusWidget(title: 'Partner', inTheMood: partnerMood),
-                    ],
+                        StatusWidget(title: 'You', inTheMood: youMood),
+                        StatusWidget(title: 'Partner', inTheMood: partnerMood),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            NotificationButton(
-              onTap: () {
-                handlePushNotificationBtn(0);
-              },
-              image: AssetImage('lib/assets/images/snowflake.png'),
-            ),
-            NotificationButton(
-              onTap: () {
-                handlePushNotificationBtn(1);
-              },
-              image: AssetImage('lib/assets/images/fire_gradient.png'),
-            )
-          ],
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      NotificationButton(
+                        onTap: () {
+                          handlePushNotificationBtn(0);
+                        },
+                        image: AssetImage('lib/assets/images/snowflake.png'),
+                      ),
+                      NotificationButton(
+                        onTap: () {
+                          handlePushNotificationBtn(1);
+                        },
+                        image:
+                            AssetImage('lib/assets/images/fire_gradient.png'),
+                      )
+                    ],
+                  ),
+                ],
+              ))
+            ],
+          ),
         ),
       ),
     );
@@ -122,19 +145,21 @@ class _HomeScreenState extends State<HomeScreen> {
     // get matchid and matcheruuid from sharedpref
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int matchId = prefs.getInt('matchId');
-//    String matcherUuid = prefs.getString('matcherUuid');
+    String matcherUuid = prefs.getString('matcherUuid');
 
     if (matchId > 0) {
-//      StatusApiResponse status = await Api.getStatus(matchId, matcherUuid);
-//      if (status == null) {
-//        error = true;
-//      } else {
-//        // update mood
-//        setState(() {
-//          youMood = status.you;
-//          partnerMood = status.partner;
-//        });
-//      }
+      StatusApiResponse status = await Api.getStatus(matchId, matcherUuid);
+
+      if (status == null) {
+        error = true;
+      } else {
+        error = false;
+        // update mood
+        setState(() {
+          youMood = status.you;
+          partnerMood = status.partner;
+        });
+      }
     } else {
       // show popup explaining how to match
       _showExplanationDialog();
@@ -196,24 +221,24 @@ class _HomeScreenState extends State<HomeScreen> {
           messageText: Api.latestError ?? kDefaultError, context: context);
       return;
     }
-
+    error = false;
     String deviceId = deviceIdApiResponse.deviceId;
 
-    // Send the notification to FCM
-    FcmResponse fcmResponse =
-        await PushNotificationSend().createNotification(mood, deviceId);
-    if (fcmResponse == null) {
-      FlushbarWrapper().flushBarErrorWrapper(
-          messageText: PushNotificationSend.latestError ?? kDefaultError,
-          context: context);
-      return;
-    }
-    if (fcmResponse.failure > 0) {
-      FlushbarWrapper().flushBarErrorWrapper(
-          messageText: fcmResponse.results.first.error ?? kDefaultError,
-          context: context);
-      return;
-    }
+    // // Send the notification to FCM
+    // FcmResponse fcmResponse =
+    //     await PushNotificationSend().createNotification(mood, deviceId);
+    // if (fcmResponse == null) {
+    //   FlushbarWrapper().flushBarErrorWrapper(
+    //       messageText: PushNotificationSend.latestError ?? kDefaultError,
+    //       context: context);
+    //   return;
+    // }
+    // if (fcmResponse.failure > 0) {
+    //   FlushbarWrapper().flushBarErrorWrapper(
+    //       messageText: fcmResponse.results.first.error ?? kDefaultError,
+    //       context: context);
+    //   return;
+    // }
 
     setState(() {
       youMood = mood;
@@ -222,9 +247,9 @@ class _HomeScreenState extends State<HomeScreen> {
     //  send note of push notification to DB
     bool success = await Api.addNotification(matcherUuid, matchId, mood);
     if (!success) {
-      FlushbarWrapper().flushBarErrorWrapper(
-          messageText: fcmResponse.results.first.error ?? kDefaultError,
-          context: context);
+      // FlushbarWrapper().flushBarErrorWrapper(
+      //     messageText: fcmResponse.results.first.error ?? kDefaultError,
+      //     context: context);
       return;
     }
 
@@ -238,8 +263,11 @@ class _HomeScreenState extends State<HomeScreen> {
     // get matcheruuid from sharedpref
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String matcherUuid = prefs.getString('matcherUuid');
+
     CheckMatchApiResponse matched = await Api.checkMatched(matcherUuid);
+
     if (matched != null) {
+      error = false;
       if (matched.matched) {
         prefs.setInt('matchId', matched.matchId);
         getCurrentStatus();
@@ -248,9 +276,11 @@ class _HomeScreenState extends State<HomeScreen> {
       // TODO show message that you have been unmatched
       prefs.setInt('matchId', 0);
       return;
+    } else {
+      error = true;
+      FlushbarWrapper().flushBarErrorWrapper(
+          messageText: Api.latestError ?? kDefaultError, context: context);
     }
-    FlushbarWrapper().flushBarErrorWrapper(
-        messageText: Api.latestError ?? kDefaultError, context: context);
   }
 
   void getCurrentStatus() async {
@@ -260,6 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     StatusApiResponse statusApiResponse =
         await Api.getStatus(matchId, matcherUuid);
+
     if (statusApiResponse != null) {
       setState(() {
         youMood = statusApiResponse.you;
@@ -267,6 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       return;
     }
+
     FlushbarWrapper().flushBarErrorWrapper(
         messageText: Api.latestError ?? kDefaultError, context: context);
   }

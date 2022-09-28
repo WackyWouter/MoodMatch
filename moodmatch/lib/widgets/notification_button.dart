@@ -9,19 +9,24 @@ class NotificationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 350,
-        height: 250,
-        decoration: BoxDecoration(
-            color: kDarkPurple,
-            borderRadius: BorderRadius.all(Radius.circular(10))),
+    return Expanded(
+      flex: 1,
+      child: GestureDetector(
+        onTap: onTap,
         child: Center(
-            child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Image(image: image),
-        )),
+          child: Container(
+            width: 160,
+            height: 160,
+            decoration: BoxDecoration(
+                color: kDarkPurple,
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            child: Center(
+                child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Image(image: image),
+            )),
+          ),
+        ),
       ),
     );
   }
